@@ -1,4 +1,6 @@
 # Taskflow App
+Este es un proyecto para la gestión de tareas desarrollado en el marco del curso de desarrollo de Aplicaciones móviles de Coderhouse
+
 
 # pasos para ejecutarlo localmente
 npm install
