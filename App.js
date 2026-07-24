@@ -1,28 +1,20 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, SafeAreaView } from "react-native";
+import ProfileScreen from "./src/screens/ProfileScreen";
+import HomeScreen from "./src/screens/HomeScreen";
+import { colors } from "./src/theme";
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>TaskFlow</Text>
-      <Text style={styles.subtitle}>Checkpoint 1: Estructura Base</Text>
-    </View>
+    <SafeAreaView style={styles.container}>
+      <ProfileScreen />
+      <HomeScreen />
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#fa4823'
+    backgroundColor: colors.appBackground,
   },
-  title: {
-    fontSize: 40,
-    color: 'white',
-    fontWeight: 'bold'
-  },
-  subtitle: {
-    fontSize: 20,
-    color: "white",
-  }
 });
