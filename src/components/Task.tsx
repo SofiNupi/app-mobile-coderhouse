@@ -35,7 +35,13 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     width: "100%",
     gap: spacing.gapS,
-    boxShadow: shadows.cardShadow,
+    // iOS
+    shadowColor: shadows.color,
+    shadowOffset: { width: shadows.offsetWidth, height: shadows.offsetHeight },
+    shadowOpacity: shadows.opacity,
+    shadowRadius: shadows.radius,
+    // Android
+    elevation: shadows.elevation,
   },
   taskTitleContainer: {
     gap: spacing.gapS,

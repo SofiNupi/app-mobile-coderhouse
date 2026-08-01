@@ -30,7 +30,13 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     borderRadius: 20,
-    boxShadow: shadows.cardShadow,
+    // iOS
+    shadowColor: shadows.color,
+    shadowOffset: { width: shadows.offsetWidth, height: shadows.offsetHeight },
+    shadowOpacity: shadows.opacity,
+    shadowRadius: shadows.radius,
+    // Android
+    elevation: shadows.elevation,
     padding: spacing.paddingL,
     backgroundColor: colors.cardBackgroundColor,
     gap: spacing.gapM,

@@ -1,4 +1,8 @@
 export const shadows = {
-  cardShadow:
-    "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)",
+  color: "#000",
+  offsetWidth: 6,
+  offsetHeight: 4,
+  opacity: 0.2,
+  radius: 8,
+  elevation: 6
 };
