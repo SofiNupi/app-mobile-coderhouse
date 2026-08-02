@@ -9,16 +9,11 @@ const HomeScreen = () => {
       <Text style={styles.title}>Tareas:</Text>
       <View
         style={styles.tasksContainer}
-        contentContainerStyle={styles.tasksContent}
       >
         {tasks.map((task) => (
           <Task
             key={task.id}
-            id={task.id}
-            title={task.title}
-            description={task.description}
-            done={task.done}
-            time={task.time}
+            {...task}
           />
         ))}
       </View>
@@ -41,9 +36,6 @@ const styles = StyleSheet.create({
   tasksContainer: {
     flex: 1,
     gap: spacing.gapM,
-  },
-  tasksContent: {
-    gap: spacing.gapS,
     paddingBottom: spacing.paddingL,
   },
 });

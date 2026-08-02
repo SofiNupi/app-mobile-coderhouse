@@ -1,7 +1,8 @@
-export type TaskProps = {
-    id: string;
-    title: string;
-    description: string;
-    done: boolean;
-    time: 'today' | 'tomorrow'| 'week' | 'month';
-  }
+export type TaskType = {
+  id: string;
+  title: string;
+  description: string;
+  done: boolean;
+  category: string;
+  time: "today" | "tomorrow" | "week" | "month";
+};

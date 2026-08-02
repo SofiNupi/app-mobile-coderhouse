@@ -1,7 +1,7 @@
 import React from "react";
 import { View, Text, Image, StyleSheet } from "react-native";
 import Badge from './Badge';
-import { colors, shadows, spacing, typography } from './../theme'
+import { colors, shadows, spacing, typography, borderRadius } from './../theme'
 
 type ProfileCardProps = {
   name: string;
@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
   card: {
     flexDirection: "row",
     alignItems: "center",
-    borderRadius: 20,
+    borderRadius: borderRadius.radiusM,
     // iOS
     shadowColor: shadows.color,
     shadowOffset: { width: shadows.offsetWidth, height: shadows.offsetHeight },
@@ -38,7 +38,7 @@ const styles = StyleSheet.create({
     // Android
     elevation: shadows.elevation,
     padding: spacing.paddingL,
-    backgroundColor: colors.cardBackgroundColor,
+    backgroundColor: colors.surface,
     gap: spacing.gapM,
   },
   avatar: {

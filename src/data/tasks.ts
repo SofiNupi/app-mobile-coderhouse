@@ -1,12 +1,13 @@
-import { TaskProps } from "../types";
+import { TaskType } from "../types";
 
-export const tasks: TaskProps[] = [
+export const tasks: TaskType[] = [
   {
     id: "1",
     title: "Ver la clase",
     description: "Ver la clase 2",
     time: "today",
     done: true,
+    category: "Estudio"
   },
   {
     id: "2",
@@ -14,6 +15,7 @@ export const tasks: TaskProps[] = [
     description: "Sacar a pasear al perro por el parque",
     time: "tomorrow",
     done: false,
+    category: "Personal"
   },
   {
     id: "3",
@@ -21,5 +23,6 @@ export const tasks: TaskProps[] = [
     description: "Ver la clase 2",
     time: "today",
     done: false,
+    category: "Estudio"
   },
 ];

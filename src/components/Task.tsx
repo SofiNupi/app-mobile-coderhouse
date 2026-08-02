@@ -1,20 +1,21 @@
 import { View, Text, StyleSheet } from "react-native";
-import { colors, spacing, typography, shadows } from "../theme";
-import { TaskProps } from "../types";
+import { colors, spacing, typography, shadows, borderRadius } from "../theme";
+import { TaskType } from "../types";
 
-const translateTime: Record<Task["time"], string> = {
+const translateTime: Record<TaskType["time"], string> = {
   today: "Hoy",
   tomorrow: "Mañana",
   week: "Semana",
   month: "Mes",
 };
 
-const Task = ({ title, description, done, time }: TaskProps) => {
+const Task = ({ title, description, category, done, time }: TaskType) => {
   return (
     <View style={styles.taskContainer}>
       <View style={styles.taskTitleContainer}>
         <Text style={styles.taskTitle}>{title}</Text>
         <Text style={styles.taskDescription}>{description}</Text>
+        <Text style={styles.taskCategory}>{category}</Text>
       </View>
       <View style={styles.statusContainer}>
         <Text
@@ -30,9 +31,9 @@ const Task = ({ title, description, done, time }: TaskProps) => {
 
 const styles = StyleSheet.create({
   taskContainer: {
-    backgroundColor: colors.cardBackgroundColor,
+    backgroundColor: colors.surface,
     padding: spacing.paddingL,
-    borderRadius: 20,
+    borderRadius: borderRadius.radiusM,
     width: "100%",
     gap: spacing.gapS,
     // iOS
@@ -55,9 +56,13 @@ const styles = StyleSheet.create({
     fontSize: typography.subtitleSize,
     color: colors.textColor,
   },
+  taskCategory: {
+    fontSize: typography.descriptionSize,
+    color: colors.accent,
+  },
   taskDone: {
     fontSize: typography.descriptionSize,
-    color: colors.textColor,
+    color: colors.success,
   },
   taskTime: {
     fontSize: typography.descriptionSize,
@@ -66,10 +71,6 @@ const styles = StyleSheet.create({
   statusContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
-  },
-
-  taskDone: {
-    color: colors.success,
   },
   taskUndone: {
     color: colors.warning,
