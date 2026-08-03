@@ -35,6 +35,7 @@ const styles = StyleSheet.create({
     padding: spacing.paddingL,
     borderRadius: borderRadius.radiusM,
     width: "100%",
+    marginVertical: spacing.marginM,
     gap: spacing.gapS,
     // iOS
     shadowColor: shadows.color,

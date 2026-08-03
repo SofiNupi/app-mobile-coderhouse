@@ -28,6 +28,3 @@ Cuando se toca el boton de enviar se validan que el titulo tenga 5 caracteres y 
 
 Idealmente se habilitaria el boton una vez que cumpla con las validaciones asi se evita la friccion con el usuario.
 
-Pasos siguientes:
-
-Agregar scroll para poder visualizar todas las tareas y separar todo en distintas pantallas. 
