@@ -1,29 +1,48 @@
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, Pressable, TouchableOpacity } from "react-native";
 import { colors, spacing, typography, shadows, borderRadius } from "../theme";
 import { TaskType } from "../types";
+import { translateTime } from "../data/timeLabels";
 
-const translateTime: Record<TaskType["time"], string> = {
-  today: "Hoy",
-  tomorrow: "Mañana",
-  week: "Semana",
-  month: "Mes",
+type TaskProps = TaskType & {
+  onToggleTask: (id: string) => void;
+  onOpenTask: (task: TaskType) => void;
 };
 
-const Task = ({ title, description, category, done, time }: TaskType) => {
+const Task = ({
+  id,
+  title,
+  description,
+  category,
+  done,
+  time,
+  onToggleTask,
+  onOpenTask,
+}: TaskProps) => {
+  const task: TaskType = { id, title, description, category, done, time };
+
   return (
     <View style={styles.taskContainer}>
+      <Pressable
+        style={styles.checkbox}
+        hitSlop={10}
+        onPress={() => onToggleTask(id)}
+      >
+        <Text style={styles.checkboxContent}>{done && "✓"}</Text>
+      </Pressable>
       <View style={styles.taskTitleContainer}>
-        <Text style={styles.taskTitle}>{title}</Text>
-        <Text style={styles.taskDescription}>{description}</Text>
-        <Text style={styles.taskCategory}>{category}</Text>
-      </View>
-      <View style={styles.statusContainer}>
-        <Text
-          style={[styles.taskDone, done ? styles.taskDone : styles.taskUndone]}
-        >
-          {done ? "Realizada" : "Por hacer"}
-        </Text>
-        <Text style={styles.taskTime}>{translateTime[time]}</Text>
+        <TouchableOpacity onPress={() => onOpenTask(task)}>
+          <Text style={styles.taskTitle}>{title}</Text>
+          <Text style={styles.taskDescription}>{description}</Text>
+          <Text style={styles.taskCategory}>{category}</Text>
+          {/* <View style={styles.statusContainer}>
+            <Text
+              style={[styles.taskDone, done ? styles.taskDone : styles.taskUndone]}
+            >
+              {done ? "Realizada" : "Por hacer"}
+            </Text>
+            <Text style={styles.taskTime}>{translateTime[time]}</Text>
+          </View> */}
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -31,12 +50,14 @@ const Task = ({ title, description, category, done, time }: TaskType) => {
 
 const styles = StyleSheet.create({
   taskContainer: {
+    flexDirection: "row",
+    alignItems: "center",
     backgroundColor: colors.surface,
     padding: spacing.paddingL,
     borderRadius: borderRadius.radiusM,
     width: "100%",
     marginVertical: spacing.marginM,
-    gap: spacing.gapS,
+    gap: spacing.gapL,
     // iOS
     shadowColor: shadows.color,
     shadowOffset: { width: shadows.offsetWidth, height: shadows.offsetHeight },
@@ -75,7 +96,20 @@ const styles = StyleSheet.create({
   },
   taskUndone: {
     color: colors.warning,
-  }
+  },
+  checkbox: {
+    width: 24,
+    height: 24,
+    borderRadius: borderRadius.radiusS,
+    borderWidth: 1,
+    borderColor: colors.textColor,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  checkboxContent: {
+    fontSize: typography.descriptionSize,
+    color: colors.textColor,
+  },
 });
 
 export default Task;
