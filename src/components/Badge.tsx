@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet } from "react-native";
-import { colors, spacing } from '../theme';
+import { colors, spacing, borderRadius } from '../theme';
 
 type BadgeProps = {
   isOnline?: boolean;
@@ -17,7 +17,7 @@ const Badge = ({ isOnline = false }: BadgeProps) => {
 
 const styles = StyleSheet.create({
   badge: {
-    borderRadius: 15,
+    borderRadius: borderRadius.radiusM,
     paddingHorizontal: 10,
     paddingVertical: spacing.paddingS,
     alignSelf: "flex-start",
@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.error,
   },
   badgeText: {
-    color: colors.textLightColor,
+    color: colors.primaryButtonText,
   },
 });
 

@@ -1,27 +1,22 @@
 import { tasks } from "../data/tasks";
 import Task from "../components/Task";
-import { Text, StyleSheet, View } from "react-native";
+import { Text, StyleSheet, View, FlatList } from "react-native";
 import { spacing, typography } from "../theme";
+import { TaskProps } from "../types";
 
 const HomeScreen = () => {
+  const renderTask = ({ item }: TaskProps) => {
+    return <Task key={item.id} {...item} />;
+  };
+
   return (
     <View style={styles.homeScreen}>
-      <Text style={styles.title}>Tareas:</Text>
-      <View
-        style={styles.tasksContainer}
-        contentContainerStyle={styles.tasksContent}
-      >
-        {tasks.map((task) => (
-          <Task
-            key={task.id}
-            id={task.id}
-            title={task.title}
-            description={task.description}
-            done={task.done}
-            time={task.time}
-          />
-        ))}
-      </View>
+      <FlatList
+        data={tasks}
+        renderItem={renderTask}
+        keyExtractor={(item) => item.id}
+        ListHeaderComponent={<Text style={styles.title}>Tareas:</Text>}
+      ></FlatList>
     </View>
   );
 };
@@ -37,14 +32,6 @@ const styles = StyleSheet.create({
     color: "white",
     fontWeight: "bold",
     marginBottom: spacing.marginM,
-  },
-  tasksContainer: {
-    flex: 1,
-    gap: spacing.gapM,
-  },
-  tasksContent: {
-    gap: spacing.gapS,
-    paddingBottom: spacing.paddingL,
   },
 });
 
