@@ -10,14 +10,21 @@ import {
 import { TaskType } from "../types";
 import { translateTime } from "../data/timeLabels";
 import Button from "./Button";
+import Checkbox from "./Checkbox";
 
 type DetailTaskScreenProps = {
   task: TaskType;
   onBack: () => void;
   onDelete: (id: string) => void;
+  onToggle: (id: string) => void;
 };
 
-const DetailTaskScreen = ({ task, onBack, onDelete }: DetailTaskScreenProps) => {
+const DetailTaskScreen = ({
+  task,
+  onBack,
+  onDelete,
+  onToggle,
+}: DetailTaskScreenProps) => {
   const { id, title, description, category, time, done } = task;
 
   const handleDelete = () => {
@@ -52,22 +59,30 @@ const DetailTaskScreen = ({ task, onBack, onDelete }: DetailTaskScreenProps) => 
 
       <View style={styles.card}>
         <View style={styles.header}>
-          <Text style={styles.title}>{title}</Text>
-          <View
-            style={[
-              styles.statusBadge,
-              done ? styles.statusDone : styles.statusPending,
-            ]}
-          >
-            <Text
+          <View style={styles.headerContent}>
+            <Text style={styles.title}>{title}</Text>
+            <View
               style={[
-                styles.statusText,
-                done ? styles.statusTextDone : styles.statusTextPending,
+                styles.statusBadge,
+                done ? styles.statusDone : styles.statusPending,
               ]}
             >
-              {done ? "Completada" : "Pendiente"}
-            </Text>
+              <Text
+                style={[
+                  styles.statusText,
+                  done ? styles.statusTextDone : styles.statusTextPending,
+                ]}
+              >
+                {done ? "Completada" : "Pendiente"}
+              </Text>
+            </View>
           </View>
+
+          <Checkbox
+            checked={done}
+            onPress={() => onToggle(id)}
+            style={styles.checkbox}
+          />
         </View>
 
         <Text style={styles.description}>{description}</Text>
@@ -90,7 +105,9 @@ const DetailTaskScreen = ({ task, onBack, onDelete }: DetailTaskScreenProps) => 
           variant="danger"
           onPress={handleDelete}
           accessibilityLabel="Borrar tarea"
-          icon={<Ionicons name="trash-outline" size={18} color={colors.error} />}
+          icon={
+            <Ionicons name="trash-outline" size={18} color={colors.error} />
+          }
           style={styles.deleteButton}
         />
       </View>
@@ -137,7 +154,16 @@ const styles = StyleSheet.create({
     elevation: shadows.elevation,
   },
   header: {
+    flexDirection: "row",
+    alignItems: "flex-start",
+    gap: spacing.gapL,
+  },
+  headerContent: {
+    flex: 1,
     gap: spacing.gapM,
+  },
+  checkbox: {
+    marginTop: 2,
   },
   title: {
     fontSize: typography.titleSize,

@@ -19,14 +19,16 @@ const HomeScreen = ({
   onDeleteTask,
   onOpenAddTask,
 }: HomeScreenProps) => {
-  const [selectedTask, setSelectedTask] = useState<TaskType | null>(null);
+  const [selectedTaskId, setSelectedTaskId] = useState<string | null>(null);
+  const selectedTask =
+    tasks.find((task) => task.id === selectedTaskId) ?? null;
 
   const openDetailTask = (task: TaskType) => {
-    setSelectedTask(task);
+    setSelectedTaskId(task.id);
   };
 
   const closeDetailTask = () => {
-    setSelectedTask(null);
+    setSelectedTaskId(null);
   };
 
   const handleDeleteTask = (id: string) => {
@@ -52,6 +54,7 @@ const HomeScreen = ({
           task={selectedTask}
           onBack={closeDetailTask}
           onDelete={handleDeleteTask}
+          onToggle={onToggleTask}
         />
       ) : (
         <FlatList

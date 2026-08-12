@@ -1,7 +1,7 @@
-import { View, Text, StyleSheet, Pressable, TouchableOpacity } from "react-native";
+import { View, Text, StyleSheet, Pressable } from "react-native";
 import { colors, spacing, typography, shadows, borderRadius } from "../theme";
 import { TaskType } from "../types";
-import { translateTime } from "../data/timeLabels";
+import Checkbox from "./Checkbox";
 
 type TaskProps = TaskType & {
   onToggleTask: (id: string) => void;
@@ -21,29 +21,21 @@ const Task = ({
   const task: TaskType = { id, title, description, category, done, time };
 
   return (
-    <View style={styles.taskContainer}>
+    <View
+      style={[styles.taskContainer, done && styles.taskContainerDone]}
+    >
       <Pressable
-        style={styles.checkbox}
-        hitSlop={10}
-        onPress={() => onToggleTask(id)}
+        style={styles.taskContent}
+        onPress={() => onOpenTask(task)}
+        accessibilityRole="button"
+        accessibilityLabel={`Abrir tarea ${title}`}
       >
-        <Text style={styles.checkboxContent}>{done && "✓"}</Text>
+        <Text style={styles.taskTitle}>{title}</Text>
+        <Text style={styles.taskDescription}>{description}</Text>
+        <Text style={styles.taskCategory}>{category}</Text>
       </Pressable>
-      <View style={styles.taskTitleContainer}>
-        <TouchableOpacity onPress={() => onOpenTask(task)}>
-          <Text style={styles.taskTitle}>{title}</Text>
-          <Text style={styles.taskDescription}>{description}</Text>
-          <Text style={styles.taskCategory}>{category}</Text>
-          {/* <View style={styles.statusContainer}>
-            <Text
-              style={[styles.taskDone, done ? styles.taskDone : styles.taskUndone]}
-            >
-              {done ? "Realizada" : "Por hacer"}
-            </Text>
-            <Text style={styles.taskTime}>{translateTime[time]}</Text>
-          </View> */}
-        </TouchableOpacity>
-      </View>
+
+      <Checkbox checked={done} onPress={() => onToggleTask(id)} />
     </View>
   );
 };
@@ -66,8 +58,14 @@ const styles = StyleSheet.create({
     // Android
     elevation: shadows.elevation,
   },
-  taskTitleContainer: {
+  taskContainerDone: {
+    backgroundColor: colors.primaryLight,
+  },
+  taskContent: {
+    flex: 1,
     gap: spacing.gapS,
+    justifyContent: "center",
+    alignSelf: "stretch",
   },
   taskTitle: {
     fontSize: typography.titleSize,
@@ -81,34 +79,6 @@ const styles = StyleSheet.create({
   taskCategory: {
     fontSize: typography.descriptionSize,
     color: colors.accent,
-  },
-  taskDone: {
-    fontSize: typography.descriptionSize,
-    color: colors.success,
-  },
-  taskTime: {
-    fontSize: typography.descriptionSize,
-    color: colors.textColor,
-  },
-  statusContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-  },
-  taskUndone: {
-    color: colors.warning,
-  },
-  checkbox: {
-    width: 24,
-    height: 24,
-    borderRadius: borderRadius.radiusS,
-    borderWidth: 1,
-    borderColor: colors.textColor,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  checkboxContent: {
-    fontSize: typography.descriptionSize,
-    color: colors.textColor,
   },
 });
 
