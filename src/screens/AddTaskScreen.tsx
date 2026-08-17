@@ -162,7 +162,6 @@ const styles = StyleSheet.create({
   form: {
     width: "100%",
     maxWidth: 520,
-    minHeight: "55%",
     backgroundColor: colors.surface,
     padding: spacing.paddingL,
     gap: spacing.gapL,

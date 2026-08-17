@@ -88,7 +88,6 @@ const DetailTaskScreen = ({
           <Checkbox
             checked={done}
             onPress={() => onToggle(id)}
-            style={styles.checkbox}
           />
         </View>
 

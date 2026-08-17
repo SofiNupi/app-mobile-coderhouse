@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
     elevation: shadows.elevation,
   },
   taskContainerDone: {
-    backgroundColor: colors.primaryLight,
+    backgroundColor: colors.primary,
   },
   taskContent: {
     flex: 1,

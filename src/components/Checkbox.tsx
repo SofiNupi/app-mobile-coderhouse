@@ -7,10 +7,10 @@ type CheckboxProps = {
   style?: ViewStyle;
 };
 
-const Checkbox = ({ checked, onPress, style }: CheckboxProps) => {
+const Checkbox = ({ checked, onPress }: CheckboxProps) => {
   return (
     <Pressable
-      style={[styles.checkbox, style]}
+      style={[styles.checkbox, checked && styles.checkboxChecked]}
       hitSlop={8}
       onPress={onPress}
       accessibilityRole="checkbox"
@@ -34,11 +34,16 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     flexShrink: 0,
+    
   },
   checkboxContent: {
     fontSize: 18,
     color: colors.textColor,
     fontWeight: "600",
+  },
+  checkboxChecked: {
+    backgroundColor: colors.primaryLight,
+    borderColor: colors.primaryLight,
   },
 });
 

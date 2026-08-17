@@ -46,3 +46,6 @@ Se agregaron bottom Tabs para navegar entre distintos Stacks Home, Tasks, y Prof
 Se incluyó el componente TaskStack que contiene el detalle.
 Al hacer esto dejaron de funcionar las acciones sobre las tareas dentro del detailTask. Quedó en TODO para el próximo Checkpoint
 
+Proximos pasos: 
+Mejorar la home para mostrar estado de tareas pendientes etc
+Agregar estado global
