@@ -1,42 +1,55 @@
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, Pressable } from "react-native";
 import { colors, spacing, typography, shadows, borderRadius } from "../theme";
 import { TaskType } from "../types";
+import Checkbox from "./Checkbox";
 
-const translateTime: Record<TaskType["time"], string> = {
-  today: "Hoy",
-  tomorrow: "Mañana",
-  week: "Semana",
-  month: "Mes",
+type TaskProps = TaskType & {
+  onToggleTask: (id: string) => void;
+  onOpenTask: (task: TaskType) => void;
 };
 
-const Task = ({ title, description, category, done, time }: TaskType) => {
+const Task = ({
+  id,
+  title,
+  description,
+  category,
+  done,
+  time,
+  onToggleTask,
+  onOpenTask,
+}: TaskProps) => {
+  const task: TaskType = { id, title, description, category, done, time };
+
   return (
-    <View style={styles.taskContainer}>
-      <View style={styles.taskTitleContainer}>
+    <View
+      style={[styles.taskContainer, done && styles.taskContainerDone]}
+    >
+      <Pressable
+        style={styles.taskContent}
+        onPress={() => onOpenTask(task)}
+        accessibilityRole="button"
+        accessibilityLabel={`Abrir tarea ${title}`}
+      >
         <Text style={styles.taskTitle}>{title}</Text>
         <Text style={styles.taskDescription}>{description}</Text>
         <Text style={styles.taskCategory}>{category}</Text>
-      </View>
-      <View style={styles.statusContainer}>
-        <Text
-          style={[styles.taskDone, done ? styles.taskDone : styles.taskUndone]}
-        >
-          {done ? "Realizada" : "Por hacer"}
-        </Text>
-        <Text style={styles.taskTime}>{translateTime[time]}</Text>
-      </View>
+      </Pressable>
+
+      <Checkbox checked={done} onPress={() => onToggleTask(id)} />
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   taskContainer: {
+    flexDirection: "row",
+    alignItems: "center",
     backgroundColor: colors.surface,
     padding: spacing.paddingL,
     borderRadius: borderRadius.radiusM,
     width: "100%",
     marginVertical: spacing.marginM,
-    gap: spacing.gapS,
+    gap: spacing.gapL,
     // iOS
     shadowColor: shadows.color,
     shadowOffset: { width: shadows.offsetWidth, height: shadows.offsetHeight },
@@ -45,8 +58,14 @@ const styles = StyleSheet.create({
     // Android
     elevation: shadows.elevation,
   },
-  taskTitleContainer: {
+  taskContainerDone: {
+    backgroundColor: colors.primaryLight,
+  },
+  taskContent: {
+    flex: 1,
     gap: spacing.gapS,
+    justifyContent: "center",
+    alignSelf: "stretch",
   },
   taskTitle: {
     fontSize: typography.titleSize,
@@ -61,21 +80,6 @@ const styles = StyleSheet.create({
     fontSize: typography.descriptionSize,
     color: colors.accent,
   },
-  taskDone: {
-    fontSize: typography.descriptionSize,
-    color: colors.success,
-  },
-  taskTime: {
-    fontSize: typography.descriptionSize,
-    color: colors.textColor,
-  },
-  statusContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-  },
-  taskUndone: {
-    color: colors.warning,
-  }
 });
 
 export default Task;
