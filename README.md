@@ -29,7 +29,7 @@ Cuando se toca el boton de enviar se validan que el titulo tenga 5 caracteres y 
 Idealmente se habilitaria el boton una vez que cumpla con las validaciones asi se evita la friccion con el usuario.
 
 
-Checkpoint 3:
+Checkpoint 4:
 Se agrega una nueva screen con el detalle de cada tarea al clickear en cada una de las Task, se renderiza por conditional rendering por selectedTask
 Se agregó el check en cada task para marcar como realizada o no realizada.
 El formulario de Nueva tarea se pasó a un Modal para no contaminar la vista principal.
@@ -38,4 +38,11 @@ Se pueden eliminar tareas y cambiar de estado.
 Proximo paso:
 Mejorar estilos
 Agregar Navegacion.
+
+
+Checkpoint 5:
+Se agregaron bottom Tabs para navegar entre distintos Stacks Home, Tasks, y Profile
+
+Se incluyó el componente TaskStack que contiene el detalle.
+Al hacer esto dejaron de funcionar las acciones sobre las tareas dentro del detailTask. Quedó en TODO para el próximo Checkpoint
 
