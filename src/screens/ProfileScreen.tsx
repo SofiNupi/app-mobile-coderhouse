@@ -1,15 +1,15 @@
 import { View, StyleSheet } from 'react-native'
 import ProfileCard from '../components/ProfileCard';
-import { spacing } from '../theme';
+import { colors, spacing } from '../theme';
+import { userData } from '../data/userdata';
 
-const name = "Sofi Nupieri";
 
 const ProfileScreen = () => {
   return (
     <View style={styles.profileContainer}> 
       <ProfileCard
-        name={name}
-        role="Senior Developer"
+        name={`${userData.firstName} ${userData.lastName}`}
+        role={userData.role}
         avatarUrl="https://img.clerk.com/eyJ0eXBlIjoicHJveHkiLCJzcmMiOiJodHRwczovL2ltYWdlcy5jbGVyay5kZXYvdXBsb2FkZWQvaW1nXzNHS0JacnV1T1dJTmZkclZoSnFFenIzeVhNbiJ9"
         isOnline={true}
       />
@@ -19,7 +19,9 @@ const ProfileScreen = () => {
 
 const styles = StyleSheet.create({
   profileContainer: {
-    padding: spacing.paddingM
+    padding: spacing.paddingM,
+    backgroundColor: colors.primaryLight,
+    flex: 1,
   }
 })
 

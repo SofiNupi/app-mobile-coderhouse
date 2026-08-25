@@ -7,25 +7,32 @@ import {
   borderRadius,
   shadows,
 } from "../theme";
-import { TaskType } from "../types";
 import { translateTime } from "../data/timeLabels";
-import Button from "./Button";
-import Checkbox from "./Checkbox";
+import Button from "../components/Button";
+import Checkbox from "../components/Checkbox";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import {RootStackParamList} from '../navigation/types'
 
-type DetailTaskScreenProps = {
-  task: TaskType;
-  onBack: () => void;
-  onDelete: (id: string) => void;
-  onToggle: (id: string) => void;
-};
+
+type DetailTaskScreenProps = NativeStackScreenProps<
+  RootStackParamList,
+  'Detail'
+>
+
 
 const DetailTaskScreen = ({
-  task,
-  onBack,
-  onDelete,
-  onToggle,
+  navigation, route
 }: DetailTaskScreenProps) => {
+  const { task } = route.params;
   const { id, title, description, category, time, done } = task;
+
+  const onDelete = (id: string) => {
+    //TODO add reducer to delete task
+  };
+
+  const onToggle = (id: string) => {
+    //TODO add reducer to toggle task
+  };
 
   const handleDelete = () => {
     Alert.alert(
@@ -45,7 +52,7 @@ const DetailTaskScreen = ({
   return (
     <View style={styles.screen}>
       <Pressable
-        onPress={onBack}
+        onPress={() => navigation.goBack()}
         style={({ pressed }) => [
           styles.backButton,
           pressed && styles.backButtonPressed,
@@ -81,7 +88,6 @@ const DetailTaskScreen = ({
           <Checkbox
             checked={done}
             onPress={() => onToggle(id)}
-            style={styles.checkbox}
           />
         </View>
 

@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     gap: spacing.gapM,
-    backgroundColor: colors.surface,
+    // backgroundColor: colors.surface,
     borderRadius: borderRadius.radiusM,
     padding: spacing.paddingL,
   },
