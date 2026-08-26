@@ -12,7 +12,8 @@ import Button from "../components/Button";
 import Checkbox from "../components/Checkbox";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import {RootStackParamList} from '../navigation/types'
-
+import { useAppDispatch, useAppSelector } from '../store/hooks'
+import { deleteTask, selectTaskById, toggleTaskStatus } from '../features/tasks/tasksSlice';
 
 type DetailTaskScreenProps = NativeStackScreenProps<
   RootStackParamList,
@@ -23,15 +24,23 @@ type DetailTaskScreenProps = NativeStackScreenProps<
 const DetailTaskScreen = ({
   navigation, route
 }: DetailTaskScreenProps) => {
-  const { task } = route.params;
-  const { id, title, description, category, time, done } = task;
+  const { taskId } = route.params;
+  const dispatch = useAppDispatch()
 
+  
+  const task = useAppSelector(selectTaskById(taskId))
+
+
+  const { id, title, description, category, time, done } = task;
+  
+  
   const onDelete = (id: string) => {
-    //TODO add reducer to delete task
+    dispatch(deleteTask(id))
+    navigation.goBack()
   };
 
   const onToggle = (id: string) => {
-    //TODO add reducer to toggle task
+    dispatch(toggleTaskStatus(task.id))
   };
 
   const handleDelete = () => {

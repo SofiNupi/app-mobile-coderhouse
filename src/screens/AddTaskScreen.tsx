@@ -1,26 +1,28 @@
 import { Text, StyleSheet, View, Alert, Modal, Pressable } from "react-native";
 
 import { useState } from "react";
-import { TaskType } from "../types";
 import Input from "../components/Input";
 import Button from "../components/Button";
 import { colors, spacing, typography, borderRadius, shadows } from "../theme";
 import { categories } from "../data/categories";
 import CategorySelector from "../components/CategorySelector";
+import { useAppDispatch } from '../store/hooks'
+import { addTask, type NewTaskInput } from '../features/tasks/tasksSlice'
 
 type AddTaskScreenProps = {
-  addTask: (task: TaskType) => void;
   isOpen: boolean;
   onOpen: () => void;
   onClose: () => void;
 };
 
 const AddTaskScreen = ({
-  addTask,
   isOpen,
   onOpen,
   onClose,
 }: AddTaskScreenProps) => {
+
+  const dispatch = useAppDispatch()
+
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [category, setCategory] = useState<(typeof categories)[number]>(
@@ -69,16 +71,15 @@ const AddTaskScreen = ({
     const valid = validateForm();
     if (!valid) return;
 
-    const newTask: TaskType = {
-      id: Date.now().toString(),
+    const newTask: NewTaskInput = {
       title,
       description,
       category,
-      done: false,
       time: "today",
     };
 
-    addTask(newTask);
+    dispatch(addTask(newTask));
+
     cleanInputs();
     onClose();
   };

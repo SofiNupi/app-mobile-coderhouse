@@ -49,3 +49,11 @@ Al hacer esto dejaron de funcionar las acciones sobre las tareas dentro del deta
 Proximos pasos: 
 Mejorar la home para mostrar estado de tareas pendientes etc
 Agregar estado global
+
+
+Checkpoint 6:
+Se migraron los datos globales a Redux
+
+Proximo paso:
+Mejorar estilos
+Agregar firebase para persistencia de datos

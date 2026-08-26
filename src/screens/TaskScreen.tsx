@@ -7,36 +7,43 @@ import { TaskType } from "../types";
 import AddTaskScreen from "../screens/AddTaskScreen";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../navigation/types";
+import { useAppDispatch, useAppSelector } from '../store/hooks'
+import {
+  selectFilter,
+  selectTaskStats,
+  selectVisibleTasks,
+  toggleTaskStatus
+} from '../features/tasks/tasksSlice'
+import FilterBar from "../components/FilterBar";
+
 
 type TaskScreenProps = NativeStackScreenProps<RootStackParamList, "Tasks">;
 
 const TaskScreen = ({ navigation }: TaskScreenProps) => {
-  const [tasks, setTasks] = useState<TaskType[]>([]);
+  const dispatch = useAppDispatch()
+
+  const tasks = useAppSelector(selectVisibleTasks)
+  const filter = useAppSelector(selectFilter);
+  const { pending, total } = useAppSelector(selectTaskStats)
+
+
   const [isAddTaskOpen, setIsAddTaskOpen] = useState(false);
 
   const openDetail = useCallback(
     (task: TaskType) => {
-      navigation.navigate("Detail", { task });
+      navigation.navigate("Detail", { taskId: task.id });
     },
     [navigation]
   );
 
 
-  const onToggleTask = (id: string) => {
-    setTasks((prev) =>
-      prev.map((task) =>
-        task.id === id ? { ...task, done: !task.done } : task
-      )
-    );
-  };
+  const onToggleTask = useCallback(
+    (id: string) => {
+      dispatch(toggleTaskStatus(id))
+    },
+    [dispatch]
+  )
 
-  const deleteTask = useCallback((id: string) => {
-    setTasks((prev) => prev.filter((task) => task.id !== id));
-  }, []);
-
-  const addTask = useCallback((task: TaskType) => {
-    setTasks((prev) => [task, ...prev]);
-  }, []);
 
   const openAddTask = useCallback(() => {
     setIsAddTaskOpen(true);
@@ -57,8 +64,20 @@ const TaskScreen = ({ navigation }: TaskScreenProps) => {
     );
   };
 
+  const getEmptyStateMessage = () => {
+    if (filter === "pending") {
+      return "No hay tareas pendientes";
+    } else if (filter === "completed") {
+      return "No hay tareas completadas";
+    } else {
+      return "Comenzá agregando una tarea";
+    }
+  }
+
   return (
     <View style={styles.homeScreen}>
+
+      <FilterBar />
       <FlatList
         data={tasks}
         renderItem={renderTask}
@@ -67,12 +86,11 @@ const TaskScreen = ({ navigation }: TaskScreenProps) => {
         ListHeaderComponent={<Text style={styles.title}>Tareas:</Text>}
         ListEmptyComponent={
           <EmptyState
-            message="Comenzá agregando una tarea"
+            message= {getEmptyStateMessage()}
           />
         }
       />
       <AddTaskScreen
-        addTask={addTask}
         isOpen={isAddTaskOpen}
         onOpen={openAddTask}
         onClose={closeAddTask}
