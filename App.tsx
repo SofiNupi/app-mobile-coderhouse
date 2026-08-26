@@ -6,16 +6,20 @@ import AddTaskScreen from "./src/screens/AddTaskScreen";
 import { colors } from "./src/theme";
 import { TaskType } from "./src/types";
 import { useState, useCallback } from "react";
+import { Provider } from 'react-redux';
+import { store } from './src/store';
 import TabNavigator from './src/navigation/TabNavigator';
 
 export default function App() {
 
   return (
-    <SafeAreaProvider>
-      <SafeAreaView style={styles.container}>
-        <TabNavigator />
-      </SafeAreaView>
-    </SafeAreaProvider>
+    <Provider store={store}>
+      <SafeAreaProvider>
+        <SafeAreaView style={styles.container}>
+          <TabNavigator />
+        </SafeAreaView>
+      </SafeAreaProvider>
+    </Provider>
   );
 }
 
