@@ -6,3 +6,8 @@ export type RootStackParamList = {
     taskId: string
   }
 }
+
+export type AuthStackParamList = {
+  Login: undefined
+  Register: undefined
+}

@@ -8,7 +8,7 @@ import { TaskType } from "./src/types";
 import { useState, useCallback } from "react";
 import { Provider } from 'react-redux';
 import { store } from './src/store';
-import TabNavigator from './src/navigation/TabNavigator';
+import RootNavigator from './src/navigation/RootNavigator';
 
 export default function App() {
 
@@ -16,7 +16,7 @@ export default function App() {
     <Provider store={store}>
       <SafeAreaProvider>
         <SafeAreaView style={styles.container}>
-          <TabNavigator />
+          <RootNavigator />
         </SafeAreaView>
       </SafeAreaProvider>
     </Provider>

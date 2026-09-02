@@ -1,5 +1,4 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { NavigationContainer } from "@react-navigation/native";
 
 import { MaterialIcons } from "@expo/vector-icons";
 
@@ -13,7 +12,6 @@ const Tab = createBottomTabNavigator();
 
 const TabNavigator = () => {
   return (
-    <NavigationContainer>
       <Tab.Navigator
         id="TabNavigator"
         screenOptions={{
@@ -69,7 +67,6 @@ const TabNavigator = () => {
           }}
         />
       </Tab.Navigator>
-    </NavigationContainer>
   );
 };
 

@@ -6,8 +6,12 @@ import Button from "../components/Button";
 import { colors, spacing, typography, borderRadius, shadows } from "../theme";
 import { categories } from "../data/categories";
 import CategorySelector from "../components/CategorySelector";
-import { useAppDispatch } from '../store/hooks'
-import { addTask, type NewTaskInput } from '../features/tasks/tasksSlice'
+import { useAppSelector } from '../store/hooks'
+import { selectCurrentUser } from '../features/auth/authSlice'
+
+import {
+  createTask
+} from '../services/tasks/tasksService'
 
 type AddTaskScreenProps = {
   isOpen: boolean;
@@ -21,7 +25,7 @@ const AddTaskScreen = ({
   onClose,
 }: AddTaskScreenProps) => {
 
-  const dispatch = useAppDispatch()
+  const user = useAppSelector(selectCurrentUser)
 
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -67,21 +71,37 @@ const AddTaskScreen = ({
     return valid;
   };
 
-  const handleAddTask = () => {
+  const handleAddTask = async () => {
     const valid = validateForm();
     if (!valid) return;
 
-    const newTask: NewTaskInput = {
-      title,
-      description,
-      category,
-      time: "today",
-    };
+    if (!user) {
+      Alert.alert('Error', 'Debés iniciar sesión para crear una tarea.');
+      return;
+    }
 
-    dispatch(addTask(newTask));
-
-    cleanInputs();
     onClose();
+
+    try {
+      await createTask(
+        {
+          title,
+          description,
+          category,
+          time: "today",
+          done: false
+        },
+        user.uid
+      )
+
+      cleanInputs();
+      
+    } catch (error) {
+      console.error(
+        'Error al crear tarea:',
+        error
+      )
+    }
   };
 
   return (
