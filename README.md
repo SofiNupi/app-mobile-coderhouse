@@ -57,3 +57,7 @@ Se migraron los datos globales a Redux
 Proximo paso:
 Mejorar estilos
 Agregar firebase para persistencia de datos
+
+
+Checkpoint 7:
+Se agregan las pantallas de Login y Register y se conecta a Firebase para la persistencia de datos

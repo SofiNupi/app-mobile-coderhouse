@@ -1,4 +1,4 @@
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, TouchableOpacity } from "react-native";
 import ProfileCard from "../components/ProfileCard";
 import { colors, spacing, borderRadius } from "../theme";
 import { userData } from "../data/userdata";
@@ -7,11 +7,24 @@ import {
 } from "../features/tasks/tasksSlice";
 import { useAppSelector } from '../store/hooks'
 import { Text } from "react-native";
+import { logout } from '../services/auth/authService'
 
 
 const ProfileScreen = () => {
   const { total, completed } = useAppSelector(selectTaskStats);
   const progress = total === 0 ? 0 : Math.round((completed / total) * 100);
+
+
+  const handleLogout = async () => {
+    try {
+      await logout()
+    } catch (error) {
+      console.error(
+        'Error al cerrar sesión:',
+        error
+      )
+    }
+  }
 
   return (
     <View style={styles.profileContainer}>
@@ -30,6 +43,15 @@ const ProfileScreen = () => {
           <View style={[styles.progressFill, { width: `${progress}%` }]} />
         </View>
       </View>
+
+      <TouchableOpacity
+        style={styles.logoutButton}
+        onPress={handleLogout}
+      >
+        <Text style={styles.logoutText}>
+          Cerrar sesión
+        </Text>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -72,6 +94,18 @@ const styles = StyleSheet.create({
     backgroundColor: colors.primary,
     borderRadius: borderRadius.radiusM,
   },
+  logoutButton: {
+    backgroundColor: colors.primary,
+    borderRadius: borderRadius.radiusM,
+    padding: spacing.paddingM,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  logoutText: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: colors.surface,
+  }
 });
 
 export default ProfileScreen;

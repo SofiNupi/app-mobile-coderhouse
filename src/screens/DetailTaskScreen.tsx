@@ -13,7 +13,8 @@ import Checkbox from "../components/Checkbox";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import {RootStackParamList} from '../navigation/types'
 import { useAppDispatch, useAppSelector } from '../store/hooks'
-import { deleteTask, selectTaskById, toggleTaskStatus } from '../features/tasks/tasksSlice';
+import { selectTaskById, toggleTaskStatus } from '../features/tasks/tasksSlice';
+import { removeTask, updateTaskStatus } from '../services/tasks/tasksService';
 
 type DetailTaskScreenProps = NativeStackScreenProps<
   RootStackParamList,
@@ -34,13 +35,25 @@ const DetailTaskScreen = ({
   const { id, title, description, category, time, done } = task;
   
   
-  const onDelete = (id: string) => {
-    dispatch(deleteTask(id))
+  const onDelete = async (id: string) => {
     navigation.goBack()
+    try {
+      await removeTask(id)
+    } catch (error) {
+      console.error('Error al borrar tarea:', error)
+      Alert.alert('Error', 'No se pudo borrar la tarea.')
+    }
+
+ 
   };
 
-  const onToggle = (id: string) => {
-    dispatch(toggleTaskStatus(task.id))
+  const onToggle = async (id: string) => {
+    try {
+      await updateTaskStatus(id, !task.done)
+    } catch (error) {
+      console.error('Error al actualizar tarea:', error)
+      Alert.alert('Error', 'No se pudo actualizar la tarea.')
+    }
   };
 
   const handleDelete = () => {

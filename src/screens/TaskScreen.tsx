@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import Task from "../components/Task";
 import EmptyState from "../components/EmptyState";
 import { Text, StyleSheet, View, FlatList } from "react-native";
@@ -12,19 +12,42 @@ import {
   selectFilter,
   selectTaskStats,
   selectVisibleTasks,
-  toggleTaskStatus
+  toggleTaskStatus,
+  setTasks,
 } from '../features/tasks/tasksSlice'
 import FilterBar from "../components/FilterBar";
 
+
+import { selectCurrentUser } from '../features/auth/authSlice';
+
+import {
+  subscribeToTasks,
+  updateTaskStatus
+} from '../services/tasks/tasksService';
 
 type TaskScreenProps = NativeStackScreenProps<RootStackParamList, "Tasks">;
 
 const TaskScreen = ({ navigation }: TaskScreenProps) => {
   const dispatch = useAppDispatch()
 
+  const user = useAppSelector(selectCurrentUser)
+
   const tasks = useAppSelector(selectVisibleTasks)
   const filter = useAppSelector(selectFilter);
   const { pending, total } = useAppSelector(selectTaskStats)
+
+  useEffect(() => {
+    if (!user) return
+
+    const unsubcribe = subscribeToTasks(
+      user.uid,
+      (tasks) => {
+        dispatch(setTasks(tasks))
+      }
+    )
+
+    return unsubcribe
+  }, [user, dispatch])
 
 
   const [isAddTaskOpen, setIsAddTaskOpen] = useState(false);
@@ -38,10 +61,23 @@ const TaskScreen = ({ navigation }: TaskScreenProps) => {
 
 
   const onToggleTask = useCallback(
-    (id: string) => {
-      dispatch(toggleTaskStatus(id))
+    async (id: string) => {
+      const task = tasks.find((task) => task.id === id)
+      if (!task) return
+
+      try {
+        await updateTaskStatus(
+          task.id,
+          !task.done
+        )
+      } catch (error) {
+        console.error(
+          'Error al actualizar tarea:',
+          error
+        )
+      }
     },
-    [dispatch]
+    [tasks]
   )
 
 

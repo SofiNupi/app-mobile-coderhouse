@@ -6,10 +6,13 @@ import { useAppSelector } from "../store/hooks";
 import {
   selectTaskStats,
 } from "../features/tasks/tasksSlice";
+import { selectCurrentUser } from "../features/auth/authSlice";
 
 const HomeScreen = () => {
 
   const { total, pending, completed } = useAppSelector(selectTaskStats);
+  const user = useAppSelector(selectCurrentUser);
+
   const getGreeting = () => {
     const hours = new Date().getHours();
     if (hours < 12) return "Buenos días";
@@ -19,7 +22,7 @@ const HomeScreen = () => {
 
   return (
     <View style={styles.homeScreen}>
-      <Text style={styles.greeting}> {getGreeting()}, {userData.firstName} </Text>
+      <Text style={styles.greeting}> {getGreeting()}, {user.displayName || user.email} </Text>
 
       <Text style={styles.taskStats}> <Text style={styles.taskStatsValue}> {pending}</Text> Tareas pendientes</Text>
       <Text style={styles.taskStats}> <Text style={styles.taskStatsValue}> {completed}</Text> Tareas completadas</Text>
