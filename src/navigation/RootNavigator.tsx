@@ -8,7 +8,10 @@ import {
   selectAuthLoading,
   selectCurrentUser,
   setUser,
+  setUserPhoto
 } from '../features/auth/authSlice'
+
+import { getUserProfile } from '../services/profile/profileService'
 
 import AuthStack from './AuthStack'
 import TabNavigator from './TabNavigator'
@@ -21,15 +24,29 @@ const RootNavigator = () => {
     const isLoading = useAppSelector(selectAuthLoading)
 
     useEffect(() => {
-       const unsuscribe = onAuthStateChanged(auth, (user) => {
+       const unsuscribe = onAuthStateChanged(auth, async (user) => {
         if (user) {
             dispatch(
                 setUser({
                     uid: user.uid,
                     email: user.email,
-                    displayName: user.displayName
+                    displayName: user.displayName,
+                    photoURL: null,
                 })
             )
+
+            try {
+                const profile = await getUserProfile(user.uid)
+
+                if (profile?.photoURL) {
+                    dispatch(setUserPhoto(profile.photoURL))
+                }
+            } catch (error) {
+                console.error (
+                    'Error al cargar el usuario',
+                    error
+                )
+            }
         } else {
             dispatch(setUser(null))
         }

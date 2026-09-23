@@ -1,17 +1,18 @@
 
-import { Text, StyleSheet, View, FlatList } from "react-native";
+import { Text, StyleSheet, View, ActivityIndicator } from "react-native";
 import { colors, spacing, typography } from "../theme";
-import { userData } from '../data/userdata';
 import { useAppSelector } from "../store/hooks";
 import {
   selectTaskStats,
+  selectTasksLoading,
 } from "../features/tasks/tasksSlice";
 import { selectCurrentUser } from "../features/auth/authSlice";
 
 const HomeScreen = () => {
 
-  const { total, pending, completed } = useAppSelector(selectTaskStats);
+  const { pending, completed } = useAppSelector(selectTaskStats);
   const user = useAppSelector(selectCurrentUser);
+  const isLoading = useAppSelector(selectTasksLoading);
 
   const getGreeting = () => {
     const hours = new Date().getHours();
@@ -22,10 +23,22 @@ const HomeScreen = () => {
 
   return (
     <View style={styles.homeScreen}>
-      <Text style={styles.greeting}> {getGreeting()}, {user.displayName || user.email} </Text>
+      <Text style={styles.greeting}>
+        {getGreeting()}, {user?.displayName || user?.email}
+      </Text>
 
-      <Text style={styles.taskStats}> <Text style={styles.taskStatsValue}> {pending}</Text> Tareas pendientes</Text>
-      <Text style={styles.taskStats}> <Text style={styles.taskStatsValue}> {completed}</Text> Tareas completadas</Text>
+      {isLoading ? (
+        <ActivityIndicator size="large" color={colors.primary} />
+      ) : (
+        <>
+          <Text style={styles.taskStats}>
+            <Text style={styles.taskStatsValue}>{pending}</Text> Tareas pendientes
+          </Text>
+          <Text style={styles.taskStats}>
+            <Text style={styles.taskStatsValue}>{completed}</Text> Tareas completadas
+          </Text>
+        </>
+      )}
     </View>
   );
 };

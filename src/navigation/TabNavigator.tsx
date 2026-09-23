@@ -7,10 +7,13 @@ import TaskStack from "../navigation/TaskStack";
 import ProfileStack from "../navigation/ProfileStack";
 
 import { colors } from "../theme";
+import { useTasksSubscription } from "../hooks/useTasksSubscription";
 
 const Tab = createBottomTabNavigator();
 
 const TabNavigator = () => {
+  useTasksSubscription();
+
   return (
       <Tab.Navigator
         id="TabNavigator"
