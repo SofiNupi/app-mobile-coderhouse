@@ -20,11 +20,13 @@ export type NewTaskInput = Omit<TaskType, "id" | "done">;
 type TaskState = {
   items: TaskType[];
   filter: TaskFilter;
+  isLoading: boolean;
 };
 
 const initialState: TaskState = {
   items: [],
   filter: "all",
+  isLoading: true,
 };
 
 const tasksSlice = createSlice({
@@ -46,7 +48,11 @@ const tasksSlice = createSlice({
     }
   },
   setTasks: (state, action: PayloadAction<TaskType[]>) => {
-    state.items = action.payload
+    state.items = action.payload;
+    state.isLoading = false;
+  },
+  setTasksLoading: (state, action: PayloadAction<boolean>) => {
+    state.isLoading = action.payload;
   },
   deleteTask: (state, action: PayloadAction<string>) => {
     state.items = state.items.filter((t) => t.id !== action.payload);
@@ -56,14 +62,21 @@ const tasksSlice = createSlice({
   },
 }});
 
-export const { addTask, toggleTaskStatus, setTasks, deleteTask, setFilter } =
-  tasksSlice.actions;
+export const {
+  addTask,
+  toggleTaskStatus,
+  setTasks,
+  setTasksLoading,
+  deleteTask,
+  setFilter,
+} = tasksSlice.actions;
 export default tasksSlice.reducer;
 
 //SELECTORS
 
 export const selectAllTasks = (state: RootState) => state.tasks.items;
 export const selectFilter = (state: RootState) => state.tasks.filter;
+export const selectTasksLoading = (state: RootState) => state.tasks.isLoading;
 
 export const selectTaskById = (id: string) => (state: RootState) => {
   return state.tasks.items.find((t) => t.id === id);

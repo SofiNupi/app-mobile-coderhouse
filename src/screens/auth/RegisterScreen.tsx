@@ -8,15 +8,18 @@ import {
 } from 'react-native'
 import Button from '../../components/Button'
 
-
 import { createAccount } from '../../services/auth/authService'
 import { colors, typography, spacing } from '../../theme'
-import Input from '../../components/Input'
+import { useAppDispatch } from '../../store/hooks'
+import { setUserDisplayName } from '../../features/auth/authSlice'
+
 type Props = {
   navigation: any
 }
 
 const RegisterScreen = ({ navigation }: Props) => {
+  const dispatch = useAppDispatch()
+  const [displayName, setDisplayName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
@@ -25,7 +28,9 @@ const RegisterScreen = ({ navigation }: Props) => {
   const handleRegister = async () => {
     setError('')
 
-    if (!email.trim() || !password || !confirmPassword) {
+    const trimmedName = displayName.trim()
+
+    if (!trimmedName || !email.trim() || !password || !confirmPassword) {
       setError('Completá todos los campos')
       return
     }
@@ -36,7 +41,9 @@ const RegisterScreen = ({ navigation }: Props) => {
     }
 
     try {
-      await createAccount(email.trim(), password)
+      await createAccount(email.trim(), password, trimmedName)
+      // onAuthStateChanged suele correr antes de updateProfile; sincronizamos Redux.
+      dispatch(setUserDisplayName(trimmedName))
     } catch (error) {
       console.error(error)
       setError('No se pudo crear la cuenta')
@@ -47,6 +54,15 @@ const RegisterScreen = ({ navigation }: Props) => {
     <View style={styles.container}>
       <Text style={styles.title}>TaskFlow</Text>
       <Text style={styles.subtitle}>Crear cuenta</Text>
+
+      <TextInput
+        style={styles.input}
+        placeholder="Nombre"
+        value={displayName}
+        onChangeText={setDisplayName}
+        autoCapitalize="words"
+        autoCorrect={false}
+      />
 
       <TextInput
         style={styles.input}

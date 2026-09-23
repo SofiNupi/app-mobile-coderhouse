@@ -1,53 +1,30 @@
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback } from "react";
 import Task from "../components/Task";
 import EmptyState from "../components/EmptyState";
-import { Text, StyleSheet, View, FlatList } from "react-native";
+import { Text, StyleSheet, View, FlatList, ActivityIndicator } from "react-native";
 import { spacing, typography, colors } from "../theme";
 import { TaskType } from "../types";
 import AddTaskScreen from "../screens/AddTaskScreen";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../navigation/types";
-import { useAppDispatch, useAppSelector } from '../store/hooks'
+import { useAppSelector } from '../store/hooks'
 import {
   selectFilter,
-  selectTaskStats,
+  selectTasksLoading,
   selectVisibleTasks,
-  toggleTaskStatus,
-  setTasks,
 } from '../features/tasks/tasksSlice'
 import FilterBar from "../components/FilterBar";
 
-
-import { selectCurrentUser } from '../features/auth/authSlice';
-
 import {
-  subscribeToTasks,
   updateTaskStatus
 } from '../services/tasks/tasksService';
 
 type TaskScreenProps = NativeStackScreenProps<RootStackParamList, "Tasks">;
 
 const TaskScreen = ({ navigation }: TaskScreenProps) => {
-  const dispatch = useAppDispatch()
-
-  const user = useAppSelector(selectCurrentUser)
-
   const tasks = useAppSelector(selectVisibleTasks)
   const filter = useAppSelector(selectFilter);
-  const { pending, total } = useAppSelector(selectTaskStats)
-
-  useEffect(() => {
-    if (!user) return
-
-    const unsubcribe = subscribeToTasks(
-      user.uid,
-      (tasks) => {
-        dispatch(setTasks(tasks))
-      }
-    )
-
-    return unsubcribe
-  }, [user, dispatch])
+  const isLoading = useAppSelector(selectTasksLoading)
 
 
   const [isAddTaskOpen, setIsAddTaskOpen] = useState(false);
@@ -110,9 +87,16 @@ const TaskScreen = ({ navigation }: TaskScreenProps) => {
     }
   }
 
+  if (isLoading) {
+    return (
+      <View style={styles.loadingContainer}>
+        <ActivityIndicator size="large" color={colors.primary} />
+      </View>
+    );
+  }
+
   return (
     <View style={styles.homeScreen}>
-
       <FilterBar />
       <FlatList
         data={tasks}
@@ -122,7 +106,7 @@ const TaskScreen = ({ navigation }: TaskScreenProps) => {
         ListHeaderComponent={<Text style={styles.title}>Tareas:</Text>}
         ListEmptyComponent={
           <EmptyState
-            message= {getEmptyStateMessage()}
+            message={getEmptyStateMessage()}
           />
         }
       />
@@ -136,6 +120,12 @@ const TaskScreen = ({ navigation }: TaskScreenProps) => {
 };
 
 const styles = StyleSheet.create({
+  loadingContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: colors.primaryLight,
+  },
   homeScreen: {
     flex: 1,
     width: "100%",
