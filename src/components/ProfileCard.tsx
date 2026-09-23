@@ -27,7 +27,9 @@ const ProfileCard = ({
         {avatarUrl ? (
           <Image style={styles.avatar} source={{ uri: avatarUrl }} />
         ) : (
-          <View style={[styles.avatar, styles.avatarPlaceholder]} />
+          <View style={[styles.avatar, styles.avatarPlaceholder]}>
+            <Ionicons name="person" size={28} color={colors.primary} />
+          </View>
         )}
 
         {onPressEditPhoto ? (
@@ -78,6 +80,8 @@ const styles = StyleSheet.create({
   },
   avatarPlaceholder: {
     backgroundColor: colors.primaryLight,
+    alignItems: "center",
+    justifyContent: "center",
   },
   editPhotoButton: {
     position: "absolute",
