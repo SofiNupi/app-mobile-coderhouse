@@ -61,3 +61,13 @@ Agregar firebase para persistencia de datos
 
 Checkpoint 7:
 Se agregan las pantallas de Login y Register y se conecta a Firebase para la persistencia de datos
+
+
+Checkpoint 8:
+
+
+Url de expo:
+https://expo.dev/accounts/sofinupi/projects/taskflow-app
+
+https://expo.dev/preview/update?message=upload+app+to+expo&updateRuntimeVersion=1.0.0&createdAt=2026-09-23T01%3A45%3A37.639Z&slug=exp&projectId=5dd70fb1-60e7-4c58-a121-9044f812f7b5&group=80306191-db27-46fa-8fae-cb2423324382
+
